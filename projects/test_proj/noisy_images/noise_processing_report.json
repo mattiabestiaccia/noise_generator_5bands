@@ -1,0 +1,52 @@
+{
+  "processing_summary": {
+    "total_images_processed": 400,
+    "total_failures": 0,
+    "original_images": 5,
+    "success_rate": "100.0%"
+  },
+  "noise_types_details": {
+    "gaussian": {
+      "processed": 50,
+      "failed": 0
+    },
+    "salt_pepper": {
+      "processed": 50,
+      "failed": 0
+    },
+    "poisson": {
+      "processed": 50,
+      "failed": 0
+    },
+    "speckle": {
+      "processed": 50,
+      "failed": 0
+    },
+    "motion_blur": {
+      "processed": 50,
+      "failed": 0
+    },
+    "atmospheric": {
+      "processed": 50,
+      "failed": 0
+    },
+    "compression": {
+      "processed": 50,
+      "failed": 0
+    },
+    "iso_noise": {
+      "processed": 50,
+      "failed": 0
+    }
+  },
+  "noise_parameters": {
+    "gaussian": "Sigma: 5-50 (deviazione standard)",
+    "salt_pepper": "Probabilità: 0.001-0.01",
+    "poisson": "Scala: 0.1-1.0",
+    "speckle": "Varianza: 0.05-0.5",
+    "motion_blur": "Kernel size: 3-21",
+    "atmospheric": "Intensità foschia: 0.1-1.0",
+    "compression": "Qualità JPEG: 95-50",
+    "iso_noise": "Sigma luma: 5-95, chroma: 2-29"
+  }
+}

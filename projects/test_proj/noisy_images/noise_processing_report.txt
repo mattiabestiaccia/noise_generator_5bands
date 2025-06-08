@@ -1,0 +1,44 @@
+REPORT PROCESSING RUMORE IMMAGINI DRONE
+==================================================
+
+RIEPILOGO:
+  Immagini originali: 5
+  Immagini processate: 400
+  Errori: 0
+  Tasso di successo: 100.0%
+
+DETTAGLI PER TIPO DI RUMORE:
+  gaussian:
+    Processate: 50
+    Fallite: 0
+  salt_pepper:
+    Processate: 50
+    Fallite: 0
+  poisson:
+    Processate: 50
+    Fallite: 0
+  speckle:
+    Processate: 50
+    Fallite: 0
+  motion_blur:
+    Processate: 50
+    Fallite: 0
+  atmospheric:
+    Processate: 50
+    Fallite: 0
+  compression:
+    Processate: 50
+    Fallite: 0
+  iso_noise:
+    Processate: 50
+    Fallite: 0
+
+PARAMETRI RUMORE:
+  gaussian: Sigma: 5-50 (deviazione standard)
+  salt_pepper: Probabilità: 0.001-0.01
+  poisson: Scala: 0.1-1.0
+  speckle: Varianza: 0.05-0.5
+  motion_blur: Kernel size: 3-21
+  atmospheric: Intensità foschia: 0.1-1.0
+  compression: Qualità JPEG: 95-50
+  iso_noise: Sigma luma: 5-95, chroma: 2-29

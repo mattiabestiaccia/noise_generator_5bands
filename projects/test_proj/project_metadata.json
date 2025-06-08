@@ -1,0 +1,37 @@
+{
+  "project_name": "test_proj",
+  "safe_name": "test_projj",
+  "description": "Test project with three levels of noise",
+  "created_date": "2025-06-08T18:58:34.277523",
+  "last_modified": "2025-06-08T19:02:02.240130",
+  "version": "1.0",
+  "structure": {
+    "input": "Immagini originali da elaborare",
+    "noisy_images": "Immagini con rumore generate",
+    "analysis": "Plot e analisi metriche",
+    "config": "File di configurazione",
+    "reports": "Report di elaborazione"
+  },
+  "processing_history": [
+    {
+      "timestamp": "2025-06-08T19:02:02.240122",
+      "operation": "noise_generation",
+      "details": {
+        "input_images": 5,
+        "noise_levels": 10,
+        "total_generated": 400,
+        "errors": 0,
+        "noise_types": [
+          "gaussian",
+          "salt_pepper",
+          "poisson",
+          "speckle",
+          "motion_blur",
+          "atmospheric",
+          "compression",
+          "iso_noise"
+        ]
+      }
+    }
+  ]
+}

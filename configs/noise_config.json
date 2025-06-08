@@ -1,0 +1,173 @@
+{
+  "description": "Configurazione per la generazione di rumore su immagini drone",
+  "version": "1.0",
+  "last_updated": "2024-01-01",
+  
+  "paths": {
+    "data": {
+      "original": "data/original",
+      "noisy": "data/noisy",
+      "noisy_images": "data/noisy/noisy_images",
+      "datasets": "data/datasets"
+    },
+    
+    "scripts": {
+      "add_noise": "scripts/add_noise_to_images.py",
+      "analyze": "scripts/analyze_noisy_images.py",
+      "dataset_utils": "scripts/dataset_utils.py"
+    },
+    
+    "analysis": {
+      "noise_analysis": "analysis/noise_analysis"
+    },
+    
+    "tests": {
+      "noise_tests": "tests/noise_tests",
+      "test_generator": "tests/test_noise_generator.py"
+    },
+    
+    "docs": {
+      "readme": "docs/README_NOISE_GENERATION.md"
+    }
+  },
+  
+  "noise_types": {
+    "gaussian": {
+      "description": "Rumore gaussiano (termico del sensore)",
+      "parameter_name": "sigma",
+      "parameter_range": [5, 50],
+      "parameter_description": "Deviazione standard del rumore"
+    },
+    
+    "salt_pepper": {
+      "description": "Rumore salt and pepper (pixel difettosi)",
+      "parameter_name": "probability",
+      "parameter_range": [0.001, 0.01],
+      "parameter_description": "Probabilità di pixel corrotti"
+    },
+    
+    "poisson": {
+      "description": "Rumore di Poisson (shot noise)",
+      "parameter_name": "scale",
+      "parameter_range": [0.1, 1.0],
+      "parameter_description": "Fattore di scala per il rumore"
+    },
+    
+    "speckle": {
+      "description": "Rumore speckle (moltiplicativo)",
+      "parameter_name": "variance",
+      "parameter_range": [0.05, 0.5],
+      "parameter_description": "Varianza del rumore moltiplicativo"
+    },
+    
+    "motion_blur": {
+      "description": "Motion blur (sfocatura da movimento)",
+      "parameter_name": "kernel_size",
+      "parameter_range": [3, 21],
+      "parameter_description": "Dimensione del kernel di blur"
+    },
+    
+    "atmospheric": {
+      "description": "Effetti atmosferici (foschia, vapore)",
+      "parameter_name": "haze_intensity",
+      "parameter_range": [0.1, 1.0],
+      "parameter_description": "Intensità degli effetti atmosferici"
+    },
+    
+    "compression": {
+      "description": "Artefatti di compressione JPEG",
+      "parameter_name": "quality",
+      "parameter_range": [50, 95],
+      "parameter_description": "Qualità JPEG (inversa all'intensità)"
+    },
+    
+    "iso_noise": {
+      "description": "Rumore ad alto ISO",
+      "parameter_name": "iso_level",
+      "parameter_range": [1, 10],
+      "parameter_description": "Livello ISO simulato"
+    }
+  },
+  
+  "generation_parameters": {
+    "default_levels": 10,
+    "level_description": "Livelli di intensità crescente (1=minimo, 10=massimo)",
+    "output_format": "auto",
+    "naming_convention": "{base_name}_{noise_type}_level_{level:02d}.{ext}",
+    "multiband_support": {
+      "enabled": true,
+      "preserve_metadata": true,
+      "supported_input_formats": [".tif", ".tiff", ".jpg", ".jpeg", ".png"],
+      "output_format_mapping": {
+        "multiband": "tif",
+        "standard": "jpg"
+      },
+      "compression_settings": {
+        "tiff": "lzw",
+        "jpeg": 95
+      }
+    }
+  },
+  
+  "analysis_parameters": {
+    "metrics": ["psnr", "ssim", "mse", "snr"],
+    "resize_for_ssim": true,
+    "max_image_size_for_ssim": 800,
+    "generate_plots": true,
+    "plot_formats": ["png"]
+  },
+  
+  "dataset_parameters": {
+    "default_splits": {
+      "train": 0.7,
+      "validation": 0.2,
+      "test": 0.1
+    },
+    
+    "subset_options": {
+      "max_images_per_type": null,
+      "random_selection": true,
+      "preserve_level_distribution": true
+    },
+    
+    "paired_dataset": {
+      "clean_folder": "clean",
+      "noisy_folder": "noisy",
+      "naming_format": "{type}_{index:06d}.jpg"
+    }
+  },
+  
+  "quality_thresholds": {
+    "excellent": {"psnr_min": 35, "ssim_min": 0.95},
+    "good": {"psnr_min": 25, "ssim_min": 0.85},
+    "moderate": {"psnr_min": 15, "ssim_min": 0.70},
+    "poor": {"psnr_min": 0, "ssim_min": 0.0}
+  },
+  
+  "recommendations": {
+    "light_denoising": {
+      "levels": [1, 2, 3],
+      "description": "Per test di denoising leggero"
+    },
+    
+    "moderate_denoising": {
+      "levels": [4, 5, 6],
+      "description": "Per test di denoising moderato"
+    },
+    
+    "heavy_denoising": {
+      "levels": [7, 8, 9, 10],
+      "description": "Per test di denoising intenso"
+    },
+    
+    "realistic_drone_noise": {
+      "noise_types": ["gaussian", "iso_noise"],
+      "description": "Tipi di rumore più realistici per immagini drone"
+    },
+    
+    "robustness_testing": {
+      "noise_types": ["salt_pepper", "speckle"],
+      "description": "Per testare robustezza agli outlier"
+    }
+  }
+}
