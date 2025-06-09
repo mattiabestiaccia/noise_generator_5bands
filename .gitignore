@@ -131,12 +131,14 @@ dmypy.json
 
 # Project specific exclusions
 # Exclude all projects except test_proj
-projects/*
+projects/**
 !projects/test_proj/
 !projects/test_proj/**
 
 # Exclude output directories (generated files)
-output/
+output/**
+!output/test_proj/
+!output/test_proj/**
 
 # IDE files
 .vscode/
