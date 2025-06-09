@@ -1,14 +1,14 @@
-# Progetto: test_proj
+# Project: `test_proj`
 
-**Descrizione:** Test project with three levels of noise
-**Creato:** 2025-06-08 18:58:34
+**Description:** Test project with three levels of noise
+**Created:** 2025-06-08 18:58:34
 
-## Struttura Progetto
+## Project Structure
 
 ```
 test_proj/
-├── input/              # Immagini originali
-├── noisy_images/       # Immagini con rumore
+├── input/              # Original images
+├── noisy_images/       # Noisy versions of the images
 │   ├── gaussian/
 │   ├── salt_pepper/
 │   ├── poisson/
@@ -17,32 +17,39 @@ test_proj/
 │   ├── atmospheric/
 │   ├── compression/
 │   └── iso_noise/
-├── analysis/           # Plot e metriche
-├── config/            # Configurazioni
-├── reports/           # Report elaborazione
+├── analysis/           # Plots and evaluation metrics
+├── config/             # Configuration files
+├── reports/            # Processing reports
 └── project_metadata.json
 ```
 
-## Comandi
+## Commands
 
-### Generazione Rumore
+### Noise Generation
+
 ```bash
-python scripts/add_noise_to_images.py --project test_projj -l 3
+python scripts/add_noise_to_images.py --project test_proj -l 3
 ```
 
-### Analisi Metriche
+### Metric Analysis
+
 ```bash
-python scripts/analyze_noise_metrics.py --project test_projj
+python scripts/analyze_noise_metrics.py --project test_proj
 ```
 
-### Gestione Progetto
+### Project Management
+
 ```bash
-# Lista progetti
+# List available projects
 python scripts/project_manager.py list
 
-# Info progetto
-python scripts/project_manager.py info test_projj
+# Show project info
+python scripts/project_manager.py info test_proj
 
-# Cleanup progetto
-python scripts/project_manager.py clean test_projj
+# Clean up project files
+python scripts/project_manager.py clean test_proj
 ```
+
+---
+
+Let me know if you want to adapt it for documentation or a README.
