@@ -165,6 +165,7 @@ Thumbs.db
 
 # Claude code
 .claude/
+.claude
 
 # Image files (if they are large test files)
 # Uncomment if needed:
