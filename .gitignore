@@ -163,6 +163,9 @@ Thumbs.db
 # Log files
 *.log
 
+# Claude code
+.claude/
+
 # Image files (if they are large test files)
 # Uncomment if needed:
 # *.tif
