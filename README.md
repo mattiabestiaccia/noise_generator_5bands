@@ -109,16 +109,112 @@ The system automatically calculates:
 | Gaussian | 23.29 | 0.9751 | Moderate |
 | ISO Noise | 15.64 | 0.8712 | Low |
 
+## 🛠️ Core Scripts and Features
+
+### 🎯 Main Noise Generator (`add_noise_to_images.py`)
+Generates noisy images with progressive intensity levels.
+```bash
+# Basic usage
+python scripts/add_noise_to_images.py
+
+# Project-based processing
+python scripts/add_noise_to_images.py --project my_project -l 5
+
+# Custom input/output
+python scripts/add_noise_to_images.py -i input_folder -o output_folder \
+  --noise-types gaussian salt_pepper --levels 3
+```
+
+### 📊 Quality Analysis (`analyze_noisy_images.py`)
+Calculates PSNR, SSIM, MSE, and SNR metrics for generated images.
+```bash
+# Analyze all generated images
+python scripts/analyze_noisy_images.py
+
+# Project-specific analysis
+python scripts/analyze_noisy_images.py --project my_project
+
+# Custom analysis
+python scripts/analyze_noisy_images.py -o original_folder -n noisy_folder -r results
+```
+
+### 📈 Metrics Analysis (`analyze_noise_metrics.py`)
+Advanced metrics analysis with statistical comparisons and trend analysis.
+```bash
+# Comprehensive metrics analysis
+python scripts/analyze_noise_metrics.py --project my_project
+
+# Compare multiple noise types
+python scripts/analyze_noise_metrics.py --compare gaussian poisson iso_noise
+```
+
+### 🔬 Multiband Analysis (`analyze_multiband_corrected.py`)
+Specialized analysis for multispectral/multiband TIFF images.
+```bash
+# Analyze multiband images
+python scripts/analyze_multiband_corrected.py --project my_project
+
+# Band-specific analysis
+python scripts/analyze_multiband_corrected.py -i input_folder --bands 1 2 3 4 5
+```
+
+### 📈 Progressive Plots (`create_progressive_plots.py`)
+Creates visualization plots showing noise progression and quality metrics.
+```bash
+# Generate all visualization plots
+python scripts/create_progressive_plots.py --project my_project
+
+# Specific plot types
+python scripts/create_progressive_plots.py --plots comparison progression metrics
+```
+
+### 🗂️ Project Manager (`project_manager.py`)
+Manages project creation, organization, and maintenance.
+```bash
+# Create new project
+python scripts/project_manager.py create my_project -d "Description"
+
+# List all projects
+python scripts/project_manager.py list
+
+# Get project information
+python scripts/project_manager.py info my_project
+
+# Clean project (remove temporary files)
+python scripts/project_manager.py clean my_project --what temp
+
+# Clean all generated data
+python scripts/project_manager.py clean my_project --what all
+```
+
+### 📦 Dataset Utilities (`dataset_utils.py`)
+Manages dataset creation, splitting, and organization.
+```bash
+# Create training/validation/test splits
+python scripts/dataset_utils.py split -o datasets/splits --project my_project
+
+# Create subset with specific criteria
+python scripts/dataset_utils.py subset -o datasets/subset \
+  --noise-types gaussian iso_noise --levels 1 3 5
+
+# Create paired dataset for supervised learning
+python scripts/dataset_utils.py paired -o datasets/paired --project my_project
+```
+
 ## 🎮 Usage Examples
 
 ### Research and Development
 ```bash
-# Dataset for denoising algorithm testing
-python scripts/dataset_utils.py subset -o datasets/research \
-  --noise-types gaussian poisson iso_noise --max-images 100
+# Create research project
+python scripts/project_manager.py create research_proj -d "Algorithm testing"
 
-# Comparative analysis
-python scripts/analyze_noisy_images.py -r analysis/comparison
+# Generate specific noise types
+python scripts/add_noise_to_images.py --project research_proj \
+  --noise-types gaussian poisson iso_noise -l 5
+
+# Comprehensive analysis
+python scripts/analyze_noise_metrics.py --project research_proj
+python scripts/create_progressive_plots.py --project research_proj
 ```
 
 ### Machine Learning Training
@@ -222,24 +318,53 @@ python scripts/analyze_noisy_images.py \
 - ✅ **JPEG/PNG** (RGB standard) - Compatibility
 - ✅ **Metadata preservation** for geospatial TIFF files
 
-## 🗂️ Project Management
+## 🗂️ Project Management System
 
-The noise generator supports project-based organization:
-- Each project has its own folder structure
-- Automatic metadata tracking
-- Configurable output organization
-- Support for batch processing
+The noise generator features a comprehensive project management system that organizes all processing activities:
 
-### Project Structure Example
+### Key Features
+- **Structured Organization**: Each project has standardized folder structure
+- **Metadata Tracking**: Automatic tracking of processing history and statistics
+- **Batch Processing**: Support for processing multiple projects
+- **Cleanup Tools**: Automated cleanup of temporary and generated files
+- **Progress Monitoring**: Track processing status and file statistics
+
+### Project Structure
 ```
 projects/
 └── your_project/
-    ├── input/           # Original images
-    ├── output/          # Generated noisy images
-    ├── analysis/        # Quality analysis results
-    ├── plots/           # Visualization plots
-    └── metadata.json    # Project metadata
+    ├── input/              # Original images to process
+    ├── noisy_images/       # Generated noisy images
+    │   ├── gaussian/       # Organized by noise type
+    │   ├── salt_pepper/
+    │   ├── poisson/
+    │   ├── speckle/
+    │   ├── motion_blur/
+    │   ├── atmospheric/
+    │   ├── compression/
+    │   └── iso_noise/
+    ├── analysis/           # Quality analysis results
+    ├── config/             # Project-specific configurations
+    ├── reports/            # Processing reports and logs
+    ├── project_metadata.json  # Project metadata and history
+    └── README.md           # Project documentation
 ```
+
+### Project Lifecycle
+1. **Creation**: `python scripts/project_manager.py create project_name`
+2. **Processing**: Add images to `input/` folder
+3. **Generation**: `python scripts/add_noise_to_images.py --project project_name`
+4. **Analysis**: `python scripts/analyze_noise_metrics.py --project project_name`
+5. **Visualization**: `python scripts/create_progressive_plots.py --project project_name`
+6. **Maintenance**: `python scripts/project_manager.py clean project_name`
+
+### Metadata Tracking
+Each project automatically tracks:
+- Creation and modification dates
+- Processing history with timestamps
+- File statistics and sizes
+- Configuration parameters used
+- Quality metrics results
 
 ---
 
