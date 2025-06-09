@@ -1,220 +1,248 @@
-# 🎯 Noise Generator - Modulo Generazione Rumore
+# 🎯 Noise Generator for UAV Drone Images
 
-Modulo **indipendente** specializzato nella **generazione di immagini rumorose** da immagini drone UAV per la creazione di dataset di training per algoritmi di denoising.
+**Independent module** specialized in **generating noisy images** from UAV drone imagery for creating training datasets for denoising algorithms.
 
-## 📁 Struttura del Modulo
+## 📁 Project Structure
 
 ```
-noise_generation/
-├── 📁 data/                    # Dati per generazione rumore
-│   ├── 📁 original/           # 4 immagini DJI originali
-│   ├── 📁 noisy/             # 320 immagini con rumore
-│   │   └── 📁 noisy_images/   # Organizzate per tipo (8 cartelle)
-│   └── 📁 datasets/          # Dataset organizzati
-├── 📁 scripts/               # Script di generazione
-│   ├── 🎯 add_noise_to_images.py    # Generatore principale
-│   ├── 📊 analyze_noisy_images.py   # Analisi qualità
-│   └── 📦 dataset_utils.py          # Gestione dataset
-├── 📁 analysis/              # Risultati analisi
-│   └── 📁 noise_analysis/    # Metriche e grafici
-├── 📁 tests/                 # Test e visualizzazioni
-│   ├── 📁 noise_tests/       # Griglie e progressioni
-│   └── 🧪 test_noise_generator.py
-├── 📁 configs/               # Configurazioni
-│   └── ⚙️ noise_config.json  # Config completa rumore
-└── 📁 docs/                  # Documentazione
-    └── 📖 README_NOISE_GENERATION.md
+noise_generator/
+├── 📁 output/                    # Generated noisy images
+│   ├── 📁 gaussian/             # Gaussian noise images
+│   ├── 📁 salt_pepper/          # Salt & pepper noise images
+│   ├── 📁 poisson/              # Poisson noise images
+│   ├── 📁 speckle/              # Speckle noise images
+│   ├── 📁 motion_blur/          # Motion blur images
+│   ├── 📁 atmospheric/          # Atmospheric effects images
+│   ├── 📁 compression/          # Compression artifacts images
+│   ├── 📁 iso_noise/            # ISO noise images
+│   └── 📄 noise_processing_report.json
+├── 📁 scripts/                  # Core processing scripts
+│   ├── 🎯 add_noise_to_images.py       # Main noise generator
+│   ├── 📊 analyze_noisy_images.py      # Quality analysis
+│   ├── 📊 analyze_noise_metrics.py     # Metrics analysis
+│   ├── 📊 analyze_multiband_corrected.py # Multiband analysis
+│   ├── 📈 create_progressive_plots.py  # Visualization plots
+│   ├── 📦 dataset_utils.py             # Dataset management
+│   └── 🗂️ project_manager.py           # Project organization
+├── 📁 projects/                 # Project-based organization
+│   └── 📁 test_proj/           # Example project
+├── 📁 configs/                  # Configuration files
+│   └── ⚙️ noise_config.json     # Complete noise configuration
+├── 📁 docs/                     # Documentation
+│   └── 📖 README_NOISE_GENERATION.md
+├── 📁 utils/                    # Utility modules
+└── 📄 requirements.txt          # Python dependencies
 ```
 
 ## 🚀 Quick Start
 
-### 1. Generazione Completa
+### 1. Complete Generation
 ```bash
-# Genera tutte le immagini con rumore (320 immagini)
+# Generate all noisy images (8 types × 10 levels)
 python scripts/add_noise_to_images.py
 
-# Analizza la qualità
+# Analyze image quality
 python scripts/analyze_noisy_images.py
 
-# Crea visualizzazioni
-python tests/test_noise_generator.py
+# Create visualization plots
+python scripts/create_progressive_plots.py
 ```
 
-### 2. Generazione Personalizzata
+### 2. Custom Generation
 ```bash
-# Solo alcuni tipi di rumore
-python scripts/add_noise_to_images.py -i data/original -o data/noisy/custom \
+# Specific noise types only
+python scripts/add_noise_to_images.py -i input_folder -o output_folder \
   --noise-types gaussian salt_pepper --levels 5
 
-# Analisi specifica
-python scripts/analyze_noisy_images.py -n data/noisy/custom -r analysis/custom
+# Targeted analysis
+python scripts/analyze_noisy_images.py -n output_folder -r analysis/results
 ```
 
-### 3. Gestione Dataset
+### 3. Dataset Management
 ```bash
-# Crea subset per training
-python scripts/dataset_utils.py subset -o data/datasets/training_set \
+# Create training subset
+python scripts/dataset_utils.py subset -o datasets/training_set \
   --noise-types gaussian iso_noise --levels 1 3 5 7 10
 
-# Crea split train/val/test
-python scripts/dataset_utils.py split -o data/datasets/splits
+# Create train/val/test splits
+python scripts/dataset_utils.py split -o datasets/splits
 
-# Dataset paired per denoising
-python scripts/dataset_utils.py paired -o data/datasets/denoising_pairs
+# Create paired dataset for denoising
+python scripts/dataset_utils.py paired -o datasets/denoising_pairs
 ```
 
-## 🎯 Tipi di Rumore Disponibili
+## 🎯 Available Noise Types
 
-| Tipo | Descrizione | Parametri | Livelli |
-|------|-------------|-----------|---------|
-| **gaussian** | Rumore termico sensore | σ: 5-50 | 1-10 |
-| **salt_pepper** | Pixel difettosi | prob: 0.001-0.01 | 1-10 |
-| **poisson** | Shot noise | scala: 0.1-1.0 | 1-10 |
-| **speckle** | Rumore moltiplicativo | var: 0.05-0.5 | 1-10 |
-| **motion_blur** | Sfocatura movimento | kernel: 3-21 | 1-10 |
-| **atmospheric** | Effetti atmosferici | intensità: 0.1-1.0 | 1-10 |
-| **compression** | Artefatti JPEG | qualità: 95-50 | 1-10 |
-| **iso_noise** | Rumore alto ISO | luma+chroma | 1-10 |
+| Type | Description | Parameters | Levels |
+|------|-------------|------------|--------|
+| **gaussian** | Sensor thermal noise | σ: 5-50 | 1-10 |
+| **salt_pepper** | Defective pixels | prob: 0.001-0.01 | 1-10 |
+| **poisson** | Shot noise | scale: 0.1-1.0 | 1-10 |
+| **speckle** | Multiplicative noise | var: 0.05-0.5 | 1-10 |
+| **motion_blur** | Movement blur | kernel: 3-21 | 1-10 |
+| **atmospheric** | Atmospheric effects | intensity: 0.1-1.0 | 1-10 |
+| **compression** | JPEG artifacts | quality: 95-50 | 1-10 |
+| **iso_noise** | High ISO noise | luma+chroma | 1-10 |
 
-## 📊 Statistiche Dataset
+## 📊 Dataset Statistics
 
-- **Immagini originali**: 4 (DJI drone)
-- **Immagini generate**: 320 (8 tipi × 10 livelli × 4 originali)
-- **Spazio occupato**: ~5 GB
-- **Formati supportati**: JPG, JPEG, PNG
-- **Risoluzione**: Mantenuta dall'originale
+- **Original images**: Variable (project-based)
+- **Generated images**: 8 types × 10 levels × N originals
+- **Supported formats**: TIFF (multiband), JPG, JPEG, PNG
+- **Resolution**: Preserved from original
+- **Metadata**: Preserved for geospatial TIFF files
 
-## 📈 Metriche di Qualità
+## 📈 Quality Metrics
 
-Il sistema calcola automaticamente:
+The system automatically calculates:
 - **PSNR** (Peak Signal-to-Noise Ratio) in dB
-- **SSIM** (Structural Similarity Index) 0-1  
+- **SSIM** (Structural Similarity Index) 0-1
 - **MSE** (Mean Squared Error)
 - **SNR** (Signal-to-Noise Ratio) in dB
 
-### Risultati Tipici (Livello 5)
+### Typical Results (Level 5)
 
-| Tipo | PSNR (dB) | SSIM | Qualità |
+| Type | PSNR (dB) | SSIM | Quality |
 |------|-----------|------|---------|
-| Compression | 38.66 | 0.9989 | Eccellente |
-| Motion Blur | 29.13 | 0.9758 | Buona |
-| Gaussian | 23.29 | 0.9751 | Moderata |
-| ISO Noise | 15.64 | 0.8712 | Bassa |
+| Compression | 38.66 | 0.9989 | Excellent |
+| Motion Blur | 29.13 | 0.9758 | Good |
+| Gaussian | 23.29 | 0.9751 | Moderate |
+| ISO Noise | 15.64 | 0.8712 | Low |
 
-## 🎮 Esempi d'Uso
+## 🎮 Usage Examples
 
-### Ricerca e Sviluppo
+### Research and Development
 ```bash
-# Dataset per test algoritmi denoising
-python scripts/dataset_utils.py subset -o data/datasets/research \
+# Dataset for denoising algorithm testing
+python scripts/dataset_utils.py subset -o datasets/research \
   --noise-types gaussian poisson iso_noise --max-images 100
 
-# Analisi comparativa
+# Comparative analysis
 python scripts/analyze_noisy_images.py -r analysis/comparison
 ```
 
-### Training Machine Learning
+### Machine Learning Training
 ```bash
-# Dataset bilanciato per training
-python scripts/dataset_utils.py split -o data/datasets/ml_training \
+# Balanced dataset for training
+python scripts/dataset_utils.py split -o datasets/ml_training \
   --train-ratio 0.8 --val-ratio 0.1 --test-ratio 0.1
 
-# Dataset paired per supervised learning
-python scripts/dataset_utils.py paired -o data/datasets/supervised
+# Paired dataset for supervised learning
+python scripts/dataset_utils.py paired -o datasets/supervised
 ```
 
-### Benchmark e Valutazione
+### Benchmarking and Evaluation
 ```bash
-# Subset con livelli specifici
-python scripts/dataset_utils.py subset -o data/datasets/benchmark \
+# Subset with specific levels
+python scripts/dataset_utils.py subset -o datasets/benchmark \
   --levels 3 5 7 --noise-types gaussian salt_pepper motion_blur
 ```
 
-## ⚙️ Configurazione
+## ⚙️ Configuration
 
-Il file `configs/noise_config.json` contiene:
-- Parametri per ogni tipo di rumore
-- Soglie di qualità
-- Raccomandazioni d'uso
-- Configurazioni di default
+The `configs/noise_config.json` file contains:
+- Parameters for each noise type
+- Quality thresholds
+- Usage recommendations
+- Default configurations
 
-## 📚 Documentazione Completa
+## 📚 Complete Documentation
 
-Vedi `docs/README_NOISE_GENERATION.md` per:
-- Descrizione dettagliata di ogni tipo di rumore
-- Parametri tecnici e calibrazione
-- Esempi avanzati di utilizzo
-- Best practices per dataset creation
+See `docs/README_NOISE_GENERATION.md` for:
+- Detailed description of each noise type
+- Technical parameters and calibration
+- Advanced usage examples
+- Best practices for dataset creation
 
-## 🔧 Requisiti
+## 🔧 Requirements
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Dipendenze principali:
-- opencv-python (elaborazione immagini)
-- numpy (calcoli numerici)
-- matplotlib (grafici)
-- scikit-image (metriche qualità)
-- rasterio (supporto TIFF multi-banda)
-- tqdm (barre di progresso)
+Main dependencies:
+- **opencv-python** (image processing)
+- **numpy** (numerical computations)
+- **matplotlib** (plotting)
+- **scikit-image** (quality metrics)
+- **rasterio** (multiband TIFF support)
+- **tqdm** (progress bars)
+- **imagecodecs** (TIFF compression support)
 
 ## 📝 Output Files
 
-### Report Automatici
-- `analysis/noise_analysis/noise_analysis_report.txt`
-- `data/noisy/noisy_images/noise_processing_report.txt`
-- `data/datasets/*/subset_statistics.json`
+### Automatic Reports
+- `output/noise_processing_report.json`
+- `output/noise_processing_report.txt`
+- `projects/*/analysis/metrics_report.json`
 
-### Visualizzazioni
-- `tests/noise_tests/noise_comparison_*.png`
-- `tests/noise_tests/intensity_progression_*.png`
-- `analysis/noise_analysis/metrics_*_progression.png`
+### Visualizations
+- `projects/*/plots/noise_comparison_*.png`
+- `projects/*/plots/intensity_progression_*.png`
+- `projects/*/plots/metrics_*_progression.png`
 
-## 🧪 Test e Verifica
+## 🧪 Testing and Verification
 
-### Test Veloce
+### Quick Test
 ```bash
-# Verifica funzionamento del modulo
-python test_quick.py
+# Verify module functionality
+python scripts/add_noise_to_images.py --help
 ```
 
-### Test Completo su Immagini TIFF Multi-banda
+### Complete Test on Multiband TIFF Images
 ```bash
-# Genera rumore su immagini registrate (esempio)
+# Generate noise on registered images (example)
 python scripts/add_noise_to_images.py \
   -i ../image_registration/projects/test_proj/registered \
-  -o data -l 3
+  -o output -l 3
 
-# Analizza qualità
+# Analyze quality
 python scripts/analyze_noisy_images.py \
   -o ../image_registration/projects/test_proj/registered \
-  -n data -r analysis/results
+  -n output -r analysis/results
 ```
 
-## 🎯 Raccomandazioni
+## 🎯 Recommendations
 
-### Per Tipo di Applicazione
-- **Denoising leggero**: Livelli 1-3, tipi gaussian/compression
-- **Denoising moderato**: Livelli 4-6, tutti i tipi
-- **Denoising intenso**: Livelli 7-10, tipi poisson/iso_noise
-- **Test robustezza**: salt_pepper, speckle
-- **Simulazione reale**: gaussian, iso_noise, atmospheric
+### By Application Type
+- **Light denoising**: Levels 1-3, gaussian/compression types
+- **Moderate denoising**: Levels 4-6, all types
+- **Heavy denoising**: Levels 7-10, poisson/iso_noise types
+- **Robustness testing**: salt_pepper, speckle
+- **Realistic simulation**: gaussian, iso_noise, atmospheric
 
-### Per Dataset Size
-- **Prototipazione**: 1-2 tipi, 3-5 livelli
-- **Sviluppo**: 3-4 tipi, 5-7 livelli
-- **Produzione**: Tutti i tipi, tutti i livelli
-- **Benchmark**: Subset bilanciato con metriche note
+### By Dataset Size
+- **Prototyping**: 1-2 types, 3-5 levels
+- **Development**: 3-4 types, 5-7 levels
+- **Production**: All types, all levels
+- **Benchmarking**: Balanced subset with known metrics
 
-### Supporto Formati
-- ✅ **TIFF multi-banda** (5 bande spettrali) - Formato principale
-- ✅ **JPEG/PNG** (RGB standard) - Compatibilità
-- ✅ **Preservazione metadati** per TIFF geospaziali
+### Format Support
+- ✅ **Multiband TIFF** (5 spectral bands) - Primary format
+- ✅ **JPEG/PNG** (RGB standard) - Compatibility
+- ✅ **Metadata preservation** for geospatial TIFF files
+
+## 🗂️ Project Management
+
+The noise generator supports project-based organization:
+- Each project has its own folder structure
+- Automatic metadata tracking
+- Configurable output organization
+- Support for batch processing
+
+### Project Structure Example
+```
+projects/
+└── your_project/
+    ├── input/           # Original images
+    ├── output/          # Generated noisy images
+    ├── analysis/        # Quality analysis results
+    ├── plots/           # Visualization plots
+    └── metadata.json    # Project metadata
+```
 
 ---
 
-**Modulo**: Noise Generation v1.0  
-**Compatibilità**: Python 3.8+  
-**Licenza**: Progetto HPL/WST
+**Module**: Noise Generator v2.0
+**Compatibility**: Python 3.8+
+**License**: HPL/WST Project
